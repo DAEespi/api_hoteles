@@ -4,18 +4,12 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Administrador} from '../models';
 import {AdministradorRepository} from '../repositories';
@@ -46,6 +40,26 @@ export class AdministradorController {
   ): Promise<Administrador> {
     return this.administradorRepository.create(administrador);
   }
+
+  @get('/administradors/findByIdUsername/{idUsername}')
+  @response(200, {
+    description: 'Array of Administrador model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Administrador, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async findByIdUsername(
+    @param.path.string('idUsername') idUsername: string,
+    @param.filter(Administrador) filter?: Filter<Administrador>,
+  ): Promise<Administrador[]> {
+    return this.administradorRepository.find({where: {usuarioId:idUsername}});
+  }
+
 
   @get('/administradors/count')
   @response(200, {

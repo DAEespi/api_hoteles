@@ -35,7 +35,7 @@ export class Hotel extends Entity {
 
   @property({
     type: 'number',
-    required: true,
+    default: 0,
   })
   calificacion: number;
 
@@ -44,6 +44,12 @@ export class Hotel extends Entity {
     required: true,
   })
   descripcion: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  administradorId: string;
 
   @property({
     type: 'string',

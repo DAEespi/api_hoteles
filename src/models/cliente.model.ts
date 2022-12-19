@@ -33,6 +33,12 @@ export class Cliente extends Entity {
   })
   telefono: number;
 
+  @property({
+    type: 'string',
+  })
+  usuarioId: string;
+
+
   // Define well-known properties here
 
   // Indexer property to allow additional data

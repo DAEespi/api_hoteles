@@ -4,18 +4,12 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Cliente} from '../models';
 import {ClienteRepository} from '../repositories';
@@ -75,6 +69,27 @@ export class ClienteController {
   ): Promise<Cliente[]> {
     return this.clienteRepository.find(filter);
   }
+
+
+  @get('/clientes/findByIdUsername/{idUsername}')
+  @response(200, {
+    description: 'Array of Cliente model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Cliente, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async findByIdUsername(
+    @param.path.string('idUsername') idUsername: string,
+    @param.filter(Cliente) filter?: Filter<Cliente>,
+  ): Promise<Cliente[]> {
+    return this.clienteRepository.find({where: {usuarioId:idUsername}});
+  }
+
 
   @patch('/clientes')
   @response(200, {

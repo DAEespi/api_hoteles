@@ -4,18 +4,12 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Hotel} from '../models';
 import {HotelRepository} from '../repositories';
@@ -74,6 +68,24 @@ export class HotelController {
     @param.filter(Hotel) filter?: Filter<Hotel>,
   ): Promise<Hotel[]> {
     return this.hotelRepository.find(filter);
+  }
+  @get('/hotels/administrador/{id}')
+  @response(200, {
+    description: 'Array of Hotel model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Hotel, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async findByIdAdministrador(
+    @param.path.string('id') id: string,
+    @param.filter(Hotel) filter?: Filter<Hotel>,
+  ): Promise<Hotel[]> {
+    return this.hotelRepository.find({where: {administradorId:id}});
   }
 
   @patch('/hotels')
